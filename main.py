@@ -61,7 +61,7 @@ try:
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
 
     bashCommand = "notify-send 'Your torrent " + torrent_name + \
-        " is now streaming' && " + "webtorrent '" + torrent_url + "' --vlc"
+        " is now streaming' && " + "webtorrent '" + torrent_url + "' --vlc --playlist"
 
     process = subprocess.run(bashCommand, shell=True)
 
