@@ -1,4 +1,9 @@
+import sys
+import os
+import subprocess
 import urllib.parse
+
+from printcolor import colors
 
 
 def encodeURIComponent(str):
@@ -22,7 +27,34 @@ def generate_trackers():
     return tr
 
 
+def check_dependencies(command):
+    process = subprocess.run(
+        command["name"] + " --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if(process.returncode != 0):
+        colors.warning("\n*****************************\n")
+        colors.warning(
+            command["name"] + " is not installed. Do you want to install " + command["name"] + " (requires root privilege)")
+        colors.warning("\n*****************************\n")
+        if(input("y/n: ") == "y"):
+            subprocess.run(command["install"], shell=True)
+        else:
+            colors.warning("Exiting...")
+            exit(1)
+
+    colors.success("found " + command["name"])
+
+
 def create_torrent_url(info_hash, torrent_name):
     url = 'magnet:?xt=urn:btih:' + info_hash + '&dn=' + \
         encodeURIComponent(torrent_name) + generate_trackers()
     return url
+
+
+def check_root_access():
+    if os.geteuid() == 0:
+        return True
+    return False
+
+
+def prompt_root_access():
+    subprocess.check_call(['sudo', sys.executable] + sys.argv)

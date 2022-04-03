@@ -21,7 +21,7 @@ nvm use 16
 npm i -g webtorrent-cli
 ```
 
-- vlc (or mpv or any other player which can play a atream)
+- vlc (or mpv or any other player which can play a stream)
 
 ### python requirements
 

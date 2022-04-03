@@ -1,27 +1,32 @@
 #! /usr/bin/python3
-import requests
 import subprocess
-from printcolor import colors
+import requests
 import utils
+from printcolor import colors
 
 
-dependencies = ["node", "webtorrent", "vlc"]
-
-
-def check_dependencies(command):
-    process = subprocess.run(
-        command + " --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if(process.returncode != 0):
-        colors.error("\n*****************************\n")
-        colors.error(command + " is not installed. Please install " + command)
-        colors.error("\n*****************************\n")
-        exit(1)
-
-    colors.success("found " + command)
+dependencies = [
+    {
+        "name": "node",
+        "install": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && nvm install node"
+    },
+    {
+        "name": "webtorrent",
+        "install": "npm install -g webtorrent"
+    },
+    {
+        "name": "vlc",
+        "install": "sudo apt-get install vlc"
+    },
+    {
+        "name": "mpv",
+        "install": "sudo apt-get install mpv"
+    }
+]
 
 
 for dependency in dependencies:
-    check_dependencies(dependency)
+    utils.check_dependencies(dependency)
 
 base_url = "https://tpb23.ukpass.co/apibay/q.php?q="
 
@@ -37,7 +42,7 @@ try:
 
     torrent_list = torrent_list_response.json()
 
-    # if list is emtpy then throw error
+    # if list is empty then throw error
     if(torrent_list[0]["id"] == '0'):
         colors.warning("No torrents found")
         exit(1)
