@@ -2,6 +2,7 @@ import sys
 import os
 import subprocess
 import urllib.parse
+import pwd
 
 from printcolor import colors
 
@@ -36,6 +37,11 @@ def check_dependencies(command):
             command["name"] + " is not installed. Do you want to install " + command["name"] + " (requires root privilege)")
         colors.warning("\n*****************************\n")
         if(input("y/n: ") == "y"):
+            # if the dependency is from npm then we don't need root access
+            if(command["install"].startswith("npm")):
+                if check_root_access():
+                    uid = pwd.getpwuid(os.geteuid()).pw_uid
+                    os.setuid(uid)
             subprocess.run(command["install"], shell=True)
         else:
             colors.warning("Exiting...")

@@ -17,10 +17,6 @@ dependencies = [
     {
         "name": "vlc",
         "install": "sudo apt-get install vlc"
-    },
-    {
-        "name": "mpv",
-        "install": "sudo apt-get install mpv"
     }
 ]
 
