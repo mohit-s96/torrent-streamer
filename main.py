@@ -13,8 +13,8 @@ dependencies = [
         "install": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && nvm install node"
     },
     {
-        "name": "webtorrent-cli",
-        "install": "npm install -g webtorrent"
+        "name": "webtorrent",
+        "install": "npm install -g webtorrent-cli"
     },
     {
         "name": "vlc",
