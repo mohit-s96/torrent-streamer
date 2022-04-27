@@ -21,5 +21,11 @@ class printcolor:
     def warning(self, text):
         print(self.YELLOW + text + self.RESET)
 
+    def message(self, text):
+        print(self.CYAN + text + self.RESET)
+
+    def info(self, text):
+        print(self.BLUE + text + self.RESET)
+
 
 colors = printcolor()

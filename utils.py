@@ -64,3 +64,34 @@ def check_root_access():
 
 def prompt_root_access():
     subprocess.check_call(['sudo', sys.executable] + sys.argv)
+
+
+def check_file_exists(file_path):
+    return os.path.isfile(file_path)
+
+
+def read_file(file_path):
+    if check_file_exists(file_path):
+        with open(file_path, 'r') as f:
+            return f.read()
+    return None
+
+
+def write_file(file_path, content):
+    with open(file_path, 'w') as f:
+        f.write(content)
+
+
+def print_help():
+    colors.info("\n*****************************\n")
+    colors.info("Usage: " + sys.argv[0] + " " + "--option")
+    colors.info("\noptions:\n")
+    colors.info("--help: print this help")
+    colors.info(
+        "--list | -L : list all the torrents and let the user decide which one to choose")
+    colors.info("--toggle-history | -TH : toggle the history on or off")
+    colors.info("--toggle-list | -TL : toggle the list mode on or off")
+    colors.info("--history-list | -HL : list search history")
+    colors.info("--history-clear | -HC : clear search history")
+    colors.info("\n*****************************\n")
+    exit(0)
