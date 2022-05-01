@@ -1,14 +1,16 @@
 import utils
 import json
 
+config_path = utils.get_file_path("config.json")
+
 
 def init():
     saveHistory = True
     showList = False
-    settings = utils.read_file("config.json")
+    settings = utils.read_file(config_path)
     if settings == None:
         print("config.json not found. Creating a new one...")
-        utils.write_file("config.json", dict_to_json(
+        utils.write_file(config_path, dict_to_json(
             {"history": True, "list": False}))
     else:
         settings = json_to_dict(settings)
@@ -28,20 +30,20 @@ def dict_to_json(dict):
 
 
 def save_history(history):
-    settings = utils.read_file("config.json")
+    settings = utils.read_file(config_path)
     settings = json_to_dict(settings)
     settings["history"] = history
-    utils.write_file("config.json", dict_to_json(settings))
+    utils.write_file(config_path, dict_to_json(settings))
 
 
 def save_list(list):
-    settings = utils.read_file("config.json")
+    settings = utils.read_file(config_path)
     settings = json_to_dict(settings)
     settings["list"] = list
-    utils.write_file("config.json", dict_to_json(settings))
+    utils.write_file(config_path, dict_to_json(settings))
 
 
 def get_setting(setting):
-    settings = utils.read_file("config.json")
+    settings = utils.read_file(config_path)
     settings = json_to_dict(settings)
     return settings[setting]

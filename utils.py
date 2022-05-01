@@ -1,10 +1,16 @@
+from printcolor import colors
 import sys
 import os
 import subprocess
 import urllib.parse
 import pwd
+import pathlib
 
-from printcolor import colors
+current_path = pathlib.Path(__file__).parent.resolve()
+
+
+def get_file_path(file_name):
+    return current_path / file_name
 
 
 def encodeURIComponent(str):
@@ -54,6 +60,12 @@ def create_torrent_url(info_hash, torrent_name):
     url = 'magnet:?xt=urn:btih:' + info_hash + '&dn=' + \
         encodeURIComponent(torrent_name) + generate_trackers()
     return url
+
+
+def drop_root_access():
+    if check_root_access():
+        uid = pwd.getpwuid(os.geteuid()).pw_uid
+        os.setuid(uid)
 
 
 def check_root_access():
