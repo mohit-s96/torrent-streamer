@@ -2,6 +2,8 @@
 
 ### Requirements
 
+The program can install these automatically as well (must have python 3)
+
 - nodejs
 
 ```sh
@@ -35,5 +37,10 @@ pip install requests
 
 - make main.py executable with `chmod u+x main.py`
 - run `./main.py`
+- run `./main.py --help` for help
+
+### further enhancement
+
+This doesn't work on windows so please submit a PR if you like, thanks.
 
 PS: This is my first time writing python so please correct any issues. Thanks.
