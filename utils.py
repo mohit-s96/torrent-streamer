@@ -1,10 +1,12 @@
-from printcolor import colors
 import sys
 import os
 import subprocess
 import urllib.parse
 import pwd
 import pathlib
+from datetime import datetime
+from printcolor import colors
+
 
 current_path = pathlib.Path(__file__).parent.resolve()
 
@@ -134,3 +136,7 @@ def bytes_to_human(n):
             value = float(n) / prefix[s]
             return '%.2f%s' % (value, s)
     return "%sB" % n
+
+
+def get_timestamp():
+    return str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
