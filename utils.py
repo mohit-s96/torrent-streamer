@@ -115,7 +115,6 @@ def print_table(table):
     """
     col_width = [max(len(str(row[i])) for row in table)
                  for i in range(len(table[0]))]
-    print(col_width)
     for row in table:
         for i in range(len(row)):
             print(str(row[i]).ljust(col_width[i] + 1), end="")

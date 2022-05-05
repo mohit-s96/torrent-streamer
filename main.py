@@ -24,10 +24,13 @@ dependencies = [
 
 overrides_list = init.init()
 
-for dependency in dependencies:
-    utils.check_dependencies(dependency)
+saveHistory, showList, setup = settings.init()
 
-saveHistory, showList = settings.init()
+if not setup:
+    for dependency in dependencies:
+        utils.check_dependencies(dependency)
+    settings.save_setup(True)
+
 
 if overrides_list:
     showList = True
@@ -73,26 +76,42 @@ try:
 
     if showList:
         table = []
-        torrent_index = 0
-        colors.message("Torrents found:")
+        torrent_index = -1
+        number_of_torrents = len(torrent_list)
+        curr = number_of_torrents - 1
+        if number_of_torrents > 10:
+            curr = 9
+        colors.message("Torrents found: " + str(number_of_torrents))
         table.append(["#", "Name", colors.green("Seeders"),
                      colors.red("Leechers"), colors.cyan("Size")])
-        for idx, torrent in enumerate(torrent_list):
-            table.append([str(idx + 1), torrent["name"],  colors.green(
-                torrent["seeders"]), colors.red(torrent["leechers"]), colors.cyan(utils.bytes_to_human(int(torrent["size"])))])
-        utils.print_table(table)
 
-        colors.message("\nChoose your torrent index: ")
+        while curr <= number_of_torrents:
+            table = [table[0]]
+            for idx, torrent in enumerate(torrent_list[:curr]):
+                table.append([str(idx + 1), torrent["name"],  colors.green(
+                    torrent["seeders"]), colors.red(torrent["leechers"]), colors.cyan(utils.bytes_to_human(int(torrent["size"])))])
 
-        try:
-            torrent_index = int(input()) - 1
-        except ValueError:
-            colors.success("\nChoosing the best torrent automatically")
-        if torrent_index >= 0 and torrent_index < len(torrent_list):
-            best_torrent = torrent_list[torrent_index]
-        else:
-            colors.warning(
-                "\nInvalid input. Choosing the best torrent automatically")
+            utils.print_table(table)
+
+            colors.message("\nChoose your torrent index: ")
+            if curr < number_of_torrents:
+                colors.message("Press m to see more")
+
+            try:
+                response = input()
+                if response == "m":
+                    if curr < number_of_torrents:
+                        curr += number_of_torrents - curr >= 10 and 10 or number_of_torrents - curr
+                    else:
+                        colors.warning("No more torrents to show")
+                else:
+                    torrent_index = int(response) - 1
+            except ValueError:
+                colors.success("\nChoosing the best torrent automatically")
+                break
+            if torrent_index >= 0 and torrent_index < len(torrent_list):
+                best_torrent = torrent_list[torrent_index]
+                break
 
     infohash = best_torrent["info_hash"]
     torrent_name = best_torrent["name"]
