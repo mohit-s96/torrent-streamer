@@ -72,11 +72,15 @@ try:
     best_torrent = get_best_torrent(torrent_list)
 
     if showList:
+        table = []
         torrent_index = 0
         colors.message("Torrents found:")
+        table.append(["#", "Name", colors.green("Seeders"),
+                     colors.red("Leechers"), colors.cyan("Size")])
         for idx, torrent in enumerate(torrent_list):
-            print(str(idx + 1) + "  =>  " + torrent["name"] + "  =>  " + "Seeders: " +
-                  torrent["seeders"] + "  =>  " + "Leechers: " + torrent["leechers"])
+            table.append([str(idx + 1), torrent["name"],  colors.green(
+                torrent["seeders"]), colors.red(torrent["leechers"]), colors.cyan(utils.bytes_to_human(int(torrent["size"])))])
+        utils.print_table(table)
 
         colors.message("\nChoose your torrent index: ")
 
@@ -89,8 +93,6 @@ try:
         else:
             colors.warning(
                 "\nInvalid input. Choosing the best torrent automatically")
-
-    torrent_page_base_url = "https://tpb23.ukpass.co/description.php?id="
 
     infohash = best_torrent["info_hash"]
     torrent_name = best_torrent["name"]

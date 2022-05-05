@@ -27,5 +27,14 @@ class printcolor:
     def info(self, text):
         print(self.BLUE + text + self.RESET)
 
+    def red(self, text):
+        return self.RED + text + self.RESET
+
+    def green(self, text):
+        return self.GREEN + text + self.RESET
+
+    def cyan(self, text):
+        return self.CYAN + text + self.RESET
+
 
 colors = printcolor()

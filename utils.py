@@ -107,3 +107,31 @@ def print_help():
     colors.info("--history-clear | -HC : clear search history")
     colors.info("\n*****************************\n")
     exit(0)
+
+
+def print_table(table):
+    """
+    Prints a table in a nice way.
+    """
+    col_width = [max(len(str(row[i])) for row in table)
+                 for i in range(len(table[0]))]
+    print(col_width)
+    for row in table:
+        for i in range(len(row)):
+            print(str(row[i]).ljust(col_width[i] + 1), end="")
+        print("")
+
+
+def bytes_to_human(n):
+    """
+    Returns a human readable string for a given number of bytes
+    """
+    symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
+    prefix = {}
+    for i, s in enumerate(symbols):
+        prefix[s] = 1 << (i + 1) * 10
+    for s in reversed(symbols):
+        if n >= prefix[s]:
+            value = float(n) / prefix[s]
+            return '%.2f%s' % (value, s)
+    return "%sB" % n
