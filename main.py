@@ -93,9 +93,9 @@ try:
 
             utils.print_table(table)
 
-            colors.message("\nChoose your torrent index: ")
+            colors.message("\nChoose your torrent number")
             if curr < number_of_torrents:
-                colors.message("Press m to see more")
+                colors.message("OR Press m to see more")
 
             try:
                 response = input()
