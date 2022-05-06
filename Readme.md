@@ -1,5 +1,9 @@
 ## search and stream torrent videos
 
+## Disclaimer
+
+Downloading/streaming copyrighted content is illegal in most countries. Whatever you stream/download through this application is your resposibility. I am not responsible for how this software is used.
+
 ### Requirements
 
 The program can install these automatically as well (must have python 3)
