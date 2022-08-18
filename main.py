@@ -23,7 +23,7 @@ dependencies = [
     }
 ]
 
-overrides_list = init.init()
+overrides_list, input_term = init.init()
 
 saveHistory, showList, setup = settings.init()
 
@@ -51,10 +51,12 @@ def get_best_torrent(torrent_list):
 
 
 try:
-    search_term = input("Enter your search term: ")
+    search_term = input_term or input("Enter your search term: ")
 
-    quality = input(
-        "Enter your preferred quality (eg 720, 1080 etc). Enter nothing to leave default: ") or ""
+    quality = ""
+    if not input_term:
+        quality = input(
+            "Enter your preferred quality (eg 720, 1080 etc). Enter nothing to leave default: ") or ""
 
     if saveHistory:
         history.append_to_history(search_term + "__" + quality)
