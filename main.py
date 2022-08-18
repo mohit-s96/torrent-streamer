@@ -4,6 +4,7 @@ import requests
 import utils
 import settings
 import history
+import platform
 import init
 from printcolor import colors
 
@@ -65,7 +66,7 @@ try:
     torrent_list = torrent_list_response.json()
 
     # if list is empty then throw error
-    if(torrent_list[0]["id"] == '0'):
+    if (torrent_list[0]["id"] == '0'):
         colors.warning("No torrents found")
         exit(1)
 
@@ -118,8 +119,13 @@ try:
 
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
 
-    bashCommand = "notify-send 'Your torrent " + torrent_name + \
-        " is now streaming' && " + "webtorrent '" + torrent_url + "' --vlc --playlist"
+    bashCommand = ""
+    if platform.platform().lower().find("macos") > -1:
+        bashCommand = "webtorrent '" + torrent_url + "' --vlc --playlist"
+    elif platform.platform().lower().find("linux") > -1:
+        bashCommand = "notify-send 'Your torrent " + torrent_name + \
+            " is now streaming' && " + "webtorrent '" + torrent_url + "' --vlc --playlist"
+    # TODO test what works for windows and add it here
 
     process = subprocess.run(bashCommand, shell=True)
 
