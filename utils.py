@@ -39,14 +39,14 @@ def generate_trackers():
 def check_dependencies(command):
     process = subprocess.run(
         command["name"] + " --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if(process.returncode != 0):
+    if (process.returncode != 0):
         colors.warning("\n*****************************\n")
         colors.warning(
             command["name"] + " is not installed. Do you want to install " + command["name"] + " (requires root privilege)")
         colors.warning("\n*****************************\n")
-        if(input("y/n: ") == "y"):
+        if (input("y/n: ") == "y"):
             # if the dependency is from npm then we don't need root access
-            if(command["install"].startswith("npm")):
+            if (command["install"].startswith("npm")):
                 if check_root_access():
                     uid = pwd.getpwuid(os.geteuid()).pw_uid
                     os.setuid(uid)
@@ -104,9 +104,13 @@ def print_help():
     colors.info(
         "--list | -L : list all the torrents and let the user decide which one to choose")
     colors.info("--toggle-history | -TH : toggle the history on or off")
-    colors.info("--toggle-list | -TL : toggle the list mode on or off")
-    colors.info("--history-list | -HL : list search history")
+    colors.info("--list | -L : toggle the list mode on or off")
+    colors.info("--history | -HL : list search history")
     colors.info("--history-clear | -HC : clear search history")
+    colors.info(
+        "-q [query term] : Search directly or pipe the results from stdin")
+    colors.info(
+        "-ph [history index] : pass the index of an item from history to search for it again")
     colors.info("\n*****************************\n")
     exit(0)
 

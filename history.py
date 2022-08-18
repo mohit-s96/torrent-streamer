@@ -38,6 +38,21 @@ def print_history():
     exit(0)
 
 
+def get_history_at_index(idx):
+    if not utils.check_file_exists(history_path):
+        print("No history found")
+        exit(1)
+    history = utils.read_file(history_path)
+    history = settings.json_to_dict(history)
+    if len(history) == 0:
+        print("No history found")
+        exit(1)
+    history_item = history[idx - 1]["item"][0:-2]
+    if history_item[-1] == "\n":
+        history_item = history_item[0:-1]
+    return history_item
+
+
 def clear_history():
     if not utils.check_file_exists(history_path):
         print("No history found")
