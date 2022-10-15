@@ -104,7 +104,7 @@ def print_help():
     colors.info(
         "--list | -L : list all the torrents and let the user decide which one to choose")
     colors.info("--toggle-history | -TH : toggle the history on or off")
-    colors.info("--list | -L : toggle the list mode on or off")
+    colors.info("--toggle-list | -TL : toggle the list mode on or off")
     colors.info("--history | -HL : list search history")
     colors.info("--history-clear | -HC : clear search history")
     colors.info(
