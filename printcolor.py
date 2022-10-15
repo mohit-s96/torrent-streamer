@@ -25,7 +25,7 @@ class printcolor:
         print(self.CYAN + text + self.RESET)
 
     def info(self, text):
-        print(self.BLUE + text + self.RESET)
+        print(self.MAGENTA + text + self.RESET)
 
     def red(self, text):
         return self.RED + text + self.RESET
