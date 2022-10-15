@@ -55,7 +55,7 @@ def init():
 
     overrides_list = False
     input_term = ""
-    options_dict = {
+    options_dict = {}
 
     if len(sys.argv) > 1:
         if any(option in sys.argv for option in history_toggle_option):
