@@ -1,5 +1,7 @@
 #! /usr/bin/python3
+from importlib.resources import path
 import subprocess
+from time import sleep
 import requests
 import utils
 import settings
@@ -23,7 +25,11 @@ dependencies = [
     }
 ]
 
-overrides_list, input_term = init.init()
+overrides_list, options_dict = init.init()
+
+input_term = options_dict["-q"]
+download = options_dict["-dl"]
+save_path = options_dict["-o"]
 
 saveHistory, showList, setup = settings.init()
 
@@ -120,16 +126,21 @@ try:
     torrent_name = best_torrent["name"]
 
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
-
-    bashCommand = ""
+    stream_or_dl = "streaming" if not download else "downloading"
+    bash_command = ""
     if platform.platform().lower().find("macos") > -1:
-        bashCommand = "webtorrent '" + torrent_url + "' --vlc --playlist"
+        bash_command = "webtorrent '" + torrent_url + "'"
     elif platform.platform().lower().find("linux") > -1:
-        bashCommand = "notify-send 'Your torrent " + torrent_name + \
-            " is now streaming' && " + "webtorrent '" + torrent_url + "' --vlc --playlist"
+        bash_command = "notify-send 'Your torrent " + torrent_name + \
+            " is now " + stream_or_dl + "' && " + "webtorrent '" + torrent_url + "'"
+    if not download:
+        bash_command += " --vlc --playlist"
+    if save_path != "":
+        bash_command += " -o " + save_path
     # TODO test what works for windows and add it here
-
-    process = subprocess.run(bashCommand, shell=True)
+    print(stream_or_dl + " " + torrent_name)
+    sleep(2)
+    process = subprocess.run(bash_command, shell=True)
 
 except KeyboardInterrupt:
     colors.warning("\nExiting...")
