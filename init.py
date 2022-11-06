@@ -10,7 +10,8 @@ def parse_input_buffer(input_str):
     options_dict = {
         "-q": "",
         "-dl": False,
-        "-o": ""
+        "-o": "",
+        "-dbg": False
     }
 
     current_buffer = ""
@@ -23,7 +24,7 @@ def parse_input_buffer(input_str):
             if current_buffer in options_dict:
                 if current_option != "":
                     options_dict[current_option] = True if (
-                        current_option == "-dl") else result
+                        current_option == "-dl" or current_option == "-dbg") else result
                     result = ""
                 current_option = current_buffer
                 current_buffer = ""

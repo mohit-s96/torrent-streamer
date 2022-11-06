@@ -30,6 +30,7 @@ overrides_list, options_dict = init.init()
 input_term = options_dict["-q"]
 download = options_dict["-dl"]
 save_path = options_dict["-o"]
+debug = options_dict["-dbg"]
 
 saveHistory, showList, setup = settings.init()
 
@@ -42,7 +43,7 @@ if not setup:
 if overrides_list:
     showList = True
 
-base_url = "https://tpb23.ukpass.co/apibay/q.php?q="
+base_url = "https://tpb25.ukpass.co/apibay/q.php?q="
 
 
 def get_best_torrent(torrent_list):
@@ -144,5 +145,7 @@ try:
 
 except KeyboardInterrupt:
     colors.warning("\nExiting...")
-except:
+except Exception as e:
+    if debug:
+        print(str(e))
     colors.error("\nSomething went wrong...")
