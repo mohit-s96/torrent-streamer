@@ -115,6 +115,8 @@ def print_help():
         "-dl : download the torrent instead of streaming")
     colors.info(
         "-o [location] : change the output location of downloads")
+    colors.info(
+        "-dbg : enable debug logging in case of errors")
     colors.info("\n*****************************\n")
     exit(0)
 
