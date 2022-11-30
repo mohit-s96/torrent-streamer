@@ -137,7 +137,7 @@ try:
     if not download:
         bash_command += " --vlc --playlist"
     if save_path != "":
-        bash_command += " -o " + save_path
+        bash_command += " -o " + "'" + save_path + "'"
     # TODO test what works for windows and add it here
     print(stream_or_dl + " " + torrent_name)
     sleep(2)
