@@ -156,5 +156,7 @@ def upgrade():
         "git reset --hard && git pull", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if(process.returncode != 0):
         colors.error("Error upgrading the application. Please file a bug at https://github.com/mohit-s96/torrent-streamer/issues")
+        exit(1)
     else:
         colors.success("Updated successfully")
+        exit(0)

@@ -75,8 +75,8 @@ def init():
             history.print_history()
         elif any(option in sys.argv for option in history_clear_option):
             history.clear_history()
-        elif any(option in sys.argv for option in history_clear_option):
-            history.clear_history()
+        elif any(option in sys.argv for option in upgrade_option):
+            utils.upgrade()
         elif direct_search_option in sys.argv:
             if not sys.stdin.isatty():
                 input_term = "-q " + sys.stdin.readlines()[0]
