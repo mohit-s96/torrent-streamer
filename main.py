@@ -27,10 +27,10 @@ dependencies = [
 
 overrides_list, options_dict = init.init()
 
-input_term = options_dict["-q"]
-download = options_dict["-dl"]
-save_path = options_dict["-o"]
-debug = options_dict["-dbg"]
+input_term = options_dict.get("-q")
+download = options_dict.get("-dl")
+save_path = options_dict.get("-o")
+debug = options_dict.get("-dbg")
 
 saveHistory, showList, setup = settings.init()
 
@@ -127,12 +127,9 @@ try:
 
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
     stream_or_dl = "streaming" if not download else "downloading"
-    bash_command = ""
-    if platform.platform().lower().find("macos") > -1:
-        bash_command = "webtorrent '" + torrent_url + "'"
-    elif platform.platform().lower().find("linux") > -1:
-        bash_command = "notify-send 'Your torrent " + torrent_name + \
-            " is now " + stream_or_dl + "' && " + "webtorrent '" + torrent_url + "'"
+    
+    bash_command = "webtorrent '" + torrent_url + "'"
+
     if not download:
         bash_command += " --vlc --playlist"
     if save_path != "":
