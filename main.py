@@ -143,7 +143,7 @@ try:
     process = subprocess.run(bash_command, shell=True)
 
 except KeyboardInterrupt:
-    colors.warning("\nExiting...")
+    colors.warning("\nExiting the program...")
 except Exception as e:
     if debug:
         print(str(e))
