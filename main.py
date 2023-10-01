@@ -2,12 +2,12 @@
 from importlib.resources import path
 import subprocess
 from time import sleep
-import requests
 import utils
 import settings
 import history
 import platform
 import init
+import json
 from printcolor import colors
 
 dependencies = [
@@ -27,10 +27,10 @@ dependencies = [
 
 overrides_list, options_dict = init.init()
 
-input_term = options_dict["-q"]
-download = options_dict["-dl"]
-save_path = options_dict["-o"]
-debug = options_dict["-dbg"]
+input_term = options_dict.get("-q")
+download = options_dict.get("-dl")
+save_path = options_dict.get("-o")
+debug = options_dict.get("-dbg")
 
 saveHistory, showList, setup = settings.init()
 
@@ -43,7 +43,7 @@ if not setup:
 if overrides_list:
     showList = True
 
-base_url = "https://tpb25.ukpass.co/apibay/q.php?q="
+base_url = "https://tpb27.ukpass.co/apibay/q.php?q="
 
 
 def get_best_torrent(torrent_list):
@@ -69,10 +69,9 @@ try:
         history.append_to_history(search_term + "__" + quality)
 
     search_term = search_term.replace(" ", "%20")
-
-    torrent_list_response = requests.get(base_url + search_term)
-
-    torrent_list = torrent_list_response.json()
+    curl_cmd = f'curl {base_url + search_term}'
+    response = subprocess.run(curl_cmd, shell=True, capture_output=True, text=True)
+    torrent_list = json.loads(response.stdout)
 
     # if list is empty then throw error
     if (torrent_list[0]["id"] == '0'):
@@ -128,12 +127,9 @@ try:
 
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
     stream_or_dl = "streaming" if not download else "downloading"
-    bash_command = ""
-    if platform.platform().lower().find("macos") > -1:
-        bash_command = "webtorrent '" + torrent_url + "'"
-    elif platform.platform().lower().find("linux") > -1:
-        bash_command = "notify-send 'Your torrent " + torrent_name + \
-            " is now " + stream_or_dl + "' && " + "webtorrent '" + torrent_url + "'"
+    
+    bash_command = "webtorrent '" + torrent_url + "'"
+
     if not download:
         bash_command += " --vlc --playlist"
     if save_path != "":

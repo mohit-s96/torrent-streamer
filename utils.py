@@ -9,6 +9,8 @@ from printcolor import colors
 
 
 current_path = pathlib.Path(__file__).parent.resolve()
+script_dir = os.path.dirname(os.path.realpath(__file__))
+process_dir = os.getcwd()
 
 
 def get_file_path(file_name):
@@ -150,3 +152,20 @@ def bytes_to_human(n):
 
 def get_timestamp():
     return str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+def upgrade():
+    code = 0
+    if(script_dir != process_dir):
+        os.chdir(script_dir)
+    process = subprocess.run(
+        "git reset --hard && git pull", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if(process.returncode != 0):
+        print(process.stderr)
+        colors.error("Error upgrading the application. Please file a bug at https://github.com/mohit-s96/torrent-streamer/issues")
+        code = 1
+    else:
+        colors.success("Updated successfully")
+        
+    if(script_dir != process_dir):
+        os.chdir(process_dir)
+    exit(code)
