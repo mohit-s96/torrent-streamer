@@ -2,12 +2,12 @@
 from importlib.resources import path
 import subprocess
 from time import sleep
-import requests
 import utils
 import settings
 import history
 import platform
 import init
+import json
 from printcolor import colors
 
 dependencies = [
@@ -43,7 +43,7 @@ if not setup:
 if overrides_list:
     showList = True
 
-base_url = "https://tpb25.ukpass.co/apibay/q.php?q="
+base_url = "https://tpb27.ukpass.co/apibay/q.php?q="
 
 
 def get_best_torrent(torrent_list):
@@ -69,10 +69,9 @@ try:
         history.append_to_history(search_term + "__" + quality)
 
     search_term = search_term.replace(" ", "%20")
-
-    torrent_list_response = requests.get(base_url + search_term)
-
-    torrent_list = torrent_list_response.json()
+    curl_cmd = f'curl {base_url + search_term}'
+    response = subprocess.run(curl_cmd, shell=True, capture_output=True, text=True)
+    torrent_list = json.loads(response.stdout)
 
     # if list is empty then throw error
     if (torrent_list[0]["id"] == '0'):

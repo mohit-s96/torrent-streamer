@@ -53,6 +53,7 @@ def init():
     direct_search_option = "-q"
     pick_from_history_option = "-ph"
     help_option = "--help"
+    upgrade_option = ["--upgrade", "-U"]
 
     overrides_list = False
     input_term = ""
@@ -72,6 +73,8 @@ def init():
             overrides_list = True
         elif any(option in sys.argv for option in history_list_option):
             history.print_history()
+        elif any(option in sys.argv for option in history_clear_option):
+            history.clear_history()
         elif any(option in sys.argv for option in history_clear_option):
             history.clear_history()
         elif direct_search_option in sys.argv:
