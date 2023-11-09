@@ -45,7 +45,6 @@ if overrides_list:
 
 base_url = "https://tpb27.ukpass.co/apibay/q.php?q="
 
-
 def get_best_torrent(torrent_list):
     best_seeders = int(torrent_list[0]["seeders"])
     best_torrent = torrent_list[0]
@@ -69,7 +68,7 @@ try:
         history.append_to_history(search_term + "__" + quality)
 
     search_term = search_term.replace(" ", "%20")
-    curl_cmd = f'curl {base_url + search_term}'
+    curl_cmd = f'curl {base_url + search_term + "&cat="}'
     response = subprocess.run(curl_cmd, shell=True, capture_output=True, text=True)
     torrent_list = json.loads(response.stdout)
 
