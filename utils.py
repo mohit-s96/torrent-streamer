@@ -103,6 +103,7 @@ def print_help():
     colors.info("Usage: " + sys.argv[0] + " " + "--option")
     colors.info("\noptions:\n")
     colors.info("--help: print this help")
+    colors.info("--upgrade: Update to the latest available version")
     colors.info(
         "--list | -L : list all the torrents and let the user decide which one to choose")
     colors.info("--toggle-history | -TH : toggle saving history on or off")
