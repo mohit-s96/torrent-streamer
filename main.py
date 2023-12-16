@@ -43,7 +43,7 @@ if not setup:
 if overrides_list:
     showList = True
 
-base_url = "https://tpb27.ukpass.co/apibay/q.php?q="
+base_url = "https://tpb28.ukpass.co/apibay/q.php?q="
 
 def get_best_torrent(torrent_list):
     best_seeders = int(torrent_list[0]["seeders"])
