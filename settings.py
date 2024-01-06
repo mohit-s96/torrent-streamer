@@ -6,7 +6,7 @@ config_path = utils.get_file_path("config.json")
 
 def init():
     saveHistory = True
-    showList = False
+    showList = True
     setup = False
     settings = utils.read_file(config_path)
     if settings == None:

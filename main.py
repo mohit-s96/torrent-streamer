@@ -106,6 +106,7 @@ try:
                 colors.message("OR Press m to see more")
 
             try:
+                print("> ", end="")
                 response = input()
                 if response == "m":
                     if curr < number_of_torrents:
@@ -123,7 +124,6 @@ try:
 
     infohash = best_torrent["info_hash"]
     torrent_name = best_torrent["name"]
-
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
     stream_or_dl = "streaming" if not download else "downloading"
     
@@ -131,7 +131,7 @@ try:
 
     if not download:
         bash_command += " --vlc --playlist"
-    if save_path != "":
+    if save_path != "" and save_path != None:
         bash_command += " -o " + "'" + save_path + "'"
     # TODO test what works for windows and add it here
     print(stream_or_dl + " " + torrent_name)
