@@ -29,22 +29,12 @@ npm i -g webtorrent-cli
 
 - vlc (or mpv or any other player which can play a stream)
 
-### python requirements
-
-- requests
-
-```sh
-pip install requests
-```
-
 ### running
 
 - make main.py executable with `chmod u+x main.py`
-- run `./main.py`
+- run `./main.py -q <ypur search term>`
 - run `./main.py --help` for help
 
 ### further enhancement
 
 This doesn't work on windows so please submit a PR if you like, thanks.
-
-PS: This is my first time writing python so please correct any issues. Thanks.
