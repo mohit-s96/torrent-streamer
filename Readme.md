@@ -31,9 +31,13 @@ npm i -g webtorrent-cli
 
 ### running
 
-- make main.py executable with `chmod u+x main.py`
+- make main.py executable with `chmod +x main.py`
 - run `./main.py -q <ypur search term>`
 - run `./main.py --help` for help
+
+### update
+
+- `./main.py --upgrade`
 
 ### further enhancement
 
