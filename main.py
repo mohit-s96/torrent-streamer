@@ -13,16 +13,10 @@ from printcolor import colors
 dependencies = [
     {
         "name": "node",
-        "install": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && nvm install node"
+        "install": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && nvm install node",
     },
-    {
-        "name": "webtorrent",
-        "install": "npm install -g webtorrent-cli"
-    },
-    {
-        "name": "vlc",
-        "install": "sudo apt-get install vlc"
-    }
+    {"name": "webtorrent", "install": "npm install -g webtorrent-cli"},
+    {"name": "vlc", "install": "sudo apt-get install vlc"},
 ]
 
 overrides_list, options_dict = init.init()
@@ -43,7 +37,8 @@ if not setup:
 if overrides_list:
     showList = True
 
-base_url = "https://tpb32.ukpass.co/apibay/q.php?q="
+base_url = "https://tpb34.ukpass.co/apibay/q.php?q="
+
 
 def get_best_torrent(torrent_list):
     best_seeders = int(torrent_list[0]["seeders"])
@@ -61,8 +56,12 @@ try:
 
     quality = ""
     if not input_term:
-        quality = input(
-            "Enter your preferred quality (eg 720, 1080 etc). Enter nothing to leave default: ") or ""
+        quality = (
+            input(
+                "Enter your preferred quality (eg 720, 1080 etc). Enter nothing to leave default: "
+            )
+            or ""
+        )
 
     if saveHistory:
         history.append_to_history(search_term + "__" + quality)
@@ -73,12 +72,11 @@ try:
     torrent_list = json.loads(response.stdout)
 
     # if list is empty then throw error
-    if (torrent_list[0]["id"] == '0'):
+    if torrent_list[0]["id"] == "0":
         colors.warning("No torrents found")
         exit(1)
 
-    torrent_list = list(
-        filter(lambda x: x["name"].find(quality) > -1, torrent_list))
+    torrent_list = list(filter(lambda x: x["name"].find(quality) > -1, torrent_list))
 
     best_torrent = get_best_torrent(torrent_list)
 
@@ -90,14 +88,28 @@ try:
         if number_of_torrents > 10:
             curr = 9
         colors.message("Torrents found: " + str(number_of_torrents))
-        table.append(["#", "Name", colors.green("Seeders"),
-                     colors.red("Leechers"), colors.cyan("Size")])
+        table.append(
+            [
+                "#",
+                "Name",
+                colors.green("Seeders"),
+                colors.red("Leechers"),
+                colors.cyan("Size"),
+            ]
+        )
 
         while curr <= number_of_torrents:
             table = [table[0]]
             for idx, torrent in enumerate(torrent_list[:curr]):
-                table.append([str(idx + 1), torrent["name"],  colors.green(
-                    torrent["seeders"]), colors.red(torrent["leechers"]), colors.cyan(utils.bytes_to_human(int(torrent["size"])))])
+                table.append(
+                    [
+                        str(idx + 1),
+                        torrent["name"],
+                        colors.green(torrent["seeders"]),
+                        colors.red(torrent["leechers"]),
+                        colors.cyan(utils.bytes_to_human(int(torrent["size"]))),
+                    ]
+                )
 
             utils.print_table(table)
 
@@ -110,7 +122,11 @@ try:
                 response = input()
                 if response == "m":
                     if curr < number_of_torrents:
-                        curr += number_of_torrents - curr >= 10 and 10 or number_of_torrents - curr
+                        curr += (
+                            number_of_torrents - curr >= 10
+                            and 10
+                            or number_of_torrents - curr
+                        )
                     else:
                         colors.warning("No more torrents to show")
                 else:
@@ -126,7 +142,7 @@ try:
     torrent_name = best_torrent["name"]
     torrent_url = utils.create_torrent_url(infohash, torrent_name)
     stream_or_dl = "streaming" if not download else "downloading"
-    
+
     bash_command = "webtorrent '" + torrent_url + "'"
 
     if not download:
