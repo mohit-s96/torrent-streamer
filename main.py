@@ -37,7 +37,7 @@ if not setup:
 if overrides_list:
     showList = True
 
-base_url = "https://tpb34.ukpass.co/apibay/q.php?q="
+base_url = "https://tpb37.ukpass.co/apibay/q.php?q="
 
 
 def get_best_torrent(torrent_list):
@@ -68,6 +68,8 @@ try:
 
     search_term = search_term.replace(" ", "%20")
     curl_cmd = f'curl "{base_url + search_term + "&cat="}"'
+    if debug:
+        print(f"CURL command: {curl_cmd}")
     response = subprocess.run(curl_cmd, shell=True, capture_output=True, text=True)
     torrent_list = json.loads(response.stdout)
 

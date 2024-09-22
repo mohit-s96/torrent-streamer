@@ -11,8 +11,9 @@ def init():
     settings = utils.read_file(config_path)
     if settings == None:
         print("config.json not found. Creating a new one...")
-        utils.write_file(config_path, dict_to_json(
-            {"history": True, "list": False, "setup": False}))
+        utils.write_file(
+            config_path, dict_to_json({"history": True, "list": False, "setup": False})
+        )
     else:
         settings = json_to_dict(settings)
         if "history" in settings:

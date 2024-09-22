@@ -1,4 +1,3 @@
-from math import fabs
 import sys
 import history
 import settings
@@ -7,12 +6,7 @@ from printcolor import colors
 
 
 def parse_input_buffer(input_str):
-    options_dict = {
-        "-q": "",
-        "-dl": False,
-        "-o": "",
-        "-dbg": False
-    }
+    options_dict = {"-q": "", "-dl": False, "-o": "", "-dbg": False}
 
     current_buffer = ""
     result = ""
@@ -23,8 +17,11 @@ def parse_input_buffer(input_str):
         if curr_char == " ":
             if current_buffer in options_dict:
                 if current_option != "":
-                    options_dict[current_option] = True if (
-                        current_option == "-dl" or current_option == "-dbg") else result
+                    options_dict[current_option] = (
+                        True
+                        if (current_option == "-dl" or current_option == "-dbg")
+                        else result
+                    )
                     result = ""
                 current_option = current_buffer
                 current_buffer = ""
@@ -36,7 +33,7 @@ def parse_input_buffer(input_str):
     if current_buffer in options_dict:
         options_dict[current_buffer] = True
         current_buffer = ""
-    if (current_option):
+    if current_option:
         options_dict[current_option] = result + current_buffer
     for key in options_dict:
         if isinstance(options_dict[key], str):
@@ -63,8 +60,9 @@ def init():
         if any(option in sys.argv for option in history_toggle_option):
             saveHistory = not settings.get_setting("history")
             settings.save_history(saveHistory)
-            print("History tracking has been switched " +
-                  ("on" if saveHistory else "off"))
+            print(
+                "History tracking has been switched " + ("on" if saveHistory else "off")
+            )
         elif any(option in sys.argv for option in list_toggle_option):
             showList = not settings.get_setting("list")
             settings.save_list(showList)

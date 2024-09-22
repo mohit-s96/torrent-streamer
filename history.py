@@ -32,8 +32,7 @@ def print_history():
     table = []
     table.append(["#", "Item", "Last Searched"])
     for i in range(len(history)):
-        table.append([str(i + 1), history[i]["item"],
-                     history[i]["timestamps"][0]])
+        table.append([str(i + 1), history[i]["item"], history[i]["timestamps"][0]])
     utils.print_table(table)
     exit(0)
 
