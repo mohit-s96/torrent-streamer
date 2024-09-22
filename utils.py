@@ -125,6 +125,7 @@ def print_help():
     colors.info("--list, -L                                     list all the torrents and let the user decide which one to choose")
     colors.info("--toggle-history, -TH                          toggle saving history on or off")
     colors.info("--toggle-list, -TL                             switch the default list mode on or off")
+    colors.info("--player, -p [player]                          change preferred player. eg. vlc or mpv")
     colors.info("--history, -HL                                 list search history")
     colors.info("--history-clear, -HC                           clear search history")
     colors.info("-ph [history index]                            pass the index of an item from history to search for it again")

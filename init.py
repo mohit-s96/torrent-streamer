@@ -52,6 +52,7 @@ def init():
     help_options = ["--help", "-h"]
     upgrade_option = ["--upgrade", "-U"]
     play_from_magnet = ["--magnet", "-m"]
+    set_player = ["--player", "-p"]
 
     overrides_list = False
     input_term = ""
@@ -76,6 +77,13 @@ def init():
             history.clear_history()
         elif any(option in sys.argv for option in upgrade_option):
             utils.upgrade()
+        elif any(option in sys.argv for option in set_player):
+            import config
+
+            player = sys.argv[2]
+            config.save_player(player)
+            print(f"set {player} in config")
+            exit(0)
         elif any(option in sys.argv for option in play_from_magnet):
             input_term = " ".join(sys.argv[2:3])
             options = parse_input_buffer(" ".join(sys.argv[3:]))

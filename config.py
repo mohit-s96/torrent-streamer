@@ -73,17 +73,24 @@ def dict_to_json(dict):
     return json.dumps(dict)
 
 
-def save_history(history):
+def save_history(history_option):
     settings = utils.read_file(config_path)
     settings = json_to_dict(settings)
-    settings["history"] = history
+    settings["history"] = history_option
     utils.write_file(config_path, dict_to_json(settings))
 
 
-def save_list(list):
+def save_list(list_option):
     settings = utils.read_file(config_path)
     settings = json_to_dict(settings)
-    settings["list"] = list
+    settings["list"] = list_option
+    utils.write_file(config_path, dict_to_json(settings))
+
+
+def save_player(preferred_player):
+    settings = utils.read_file(config_path)
+    settings = json_to_dict(settings)
+    settings["player"] = preferred_player
     utils.write_file(config_path, dict_to_json(settings))
 
 
