@@ -1,5 +1,5 @@
 import utils
-import settings
+import config
 
 history_path = utils.get_file_path("history.json")
 
@@ -8,7 +8,7 @@ def append_to_history(item):
     if not utils.check_file_exists(history_path):
         utils.write_file(history_path, "[]")
     history = utils.read_file(history_path)
-    history = settings.json_to_dict(history)
+    history = config.json_to_dict(history)
 
     found = False
     for i in range(len(history)):
@@ -17,7 +17,7 @@ def append_to_history(item):
             history[i]["timestamps"].append(utils.get_timestamp())
     if not found:
         history.append({"item": item, "timestamps": [utils.get_timestamp()]})
-    utils.write_file(history_path, settings.dict_to_json(history))
+    utils.write_file(history_path, config.dict_to_json(history))
 
 
 def print_history():
@@ -25,7 +25,7 @@ def print_history():
         print("No history found")
         exit(1)
     history = utils.read_file(history_path)
-    history = settings.json_to_dict(history)
+    history = config.json_to_dict(history)
     if len(history) == 0:
         print("No history found")
         exit(1)
@@ -42,7 +42,7 @@ def get_history_at_index(idx):
         print("No history found")
         exit(1)
     history = utils.read_file(history_path)
-    history = settings.json_to_dict(history)
+    history = config.json_to_dict(history)
     if len(history) == 0:
         print("No history found")
         exit(1)

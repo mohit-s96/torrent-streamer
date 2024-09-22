@@ -1,6 +1,6 @@
 import sys
 import history
-import settings
+import config
 import utils
 from printcolor import colors
 
@@ -58,14 +58,14 @@ def init():
 
     if len(sys.argv) > 1:
         if any(option in sys.argv for option in history_toggle_option):
-            saveHistory = not settings.get_setting("history")
-            settings.save_history(saveHistory)
+            saveHistory = not config.get_setting("history")
+            config.save_history(saveHistory)
             print(
                 "History tracking has been switched " + ("on" if saveHistory else "off")
             )
         elif any(option in sys.argv for option in list_toggle_option):
-            showList = not settings.get_setting("list")
-            settings.save_list(showList)
+            showList = not config.get_setting("list")
+            config.save_list(showList)
             print("List has been switched " + ("on" if showList else "off"))
         elif any(option in sys.argv for option in show_list_option):
             overrides_list = True

@@ -1,14 +1,12 @@
 #! /usr/bin/python3
-from importlib.resources import path
 import subprocess
 from time import sleep
 import utils
-import settings
+import config
 import history
-import platform
 import init
-import json
 from printcolor import colors
+import providers.providers as providers
 
 dependencies = [
     {
@@ -26,16 +24,12 @@ download = options_dict.get("-dl")
 save_path = options_dict.get("-o")
 debug = options_dict.get("-dbg")
 
-saveHistory, showList, setup = settings.init()
+config.load_config()
 
-if not setup:
+if not config.app_config.setup:
     for dependency in dependencies:
         utils.check_dependencies(dependency)
-    settings.save_setup(True)
-
-
-if overrides_list:
-    showList = True
+    config.save_setup(True)
 
 base_url = "https://tpb37.ukpass.co/apibay/q.php?q="
 
@@ -63,26 +57,16 @@ try:
             or ""
         )
 
-    if saveHistory:
+    if config.app_config.save_history:
         history.append_to_history(search_term + "__" + quality)
 
-    search_term = search_term.replace(" ", "%20")
-    curl_cmd = f'curl "{base_url + search_term + "&cat="}"'
-    if debug:
-        print(f"CURL command: {curl_cmd}")
-    response = subprocess.run(curl_cmd, shell=True, capture_output=True, text=True)
-    torrent_list = json.loads(response.stdout)
+    new_list = providers.get_list_from_query(search_term)
 
-    # if list is empty then throw error
-    if torrent_list[0]["id"] == "0":
-        colors.warning("No torrents found")
-        exit(1)
-
-    torrent_list = list(filter(lambda x: x["name"].find(quality) > -1, torrent_list))
+    torrent_list = list(filter(lambda x: x["title"].find(quality) > -1, new_list))
 
     best_torrent = get_best_torrent(torrent_list)
 
-    if showList:
+    if config.app_config.show_list:
         table = []
         torrent_index = -1
         number_of_torrents = len(torrent_list)
@@ -106,10 +90,10 @@ try:
                 table.append(
                     [
                         str(idx + 1),
-                        torrent["name"],
+                        torrent["title"],
                         colors.green(torrent["seeders"]),
                         colors.red(torrent["leechers"]),
-                        colors.cyan(utils.bytes_to_human(int(torrent["size"]))),
+                        colors.cyan(torrent["size"]),
                     ]
                 )
 
@@ -140,15 +124,16 @@ try:
                 best_torrent = torrent_list[torrent_index]
                 break
 
-    infohash = best_torrent["info_hash"]
-    torrent_name = best_torrent["name"]
-    torrent_url = utils.create_torrent_url(infohash, torrent_name)
+    # infohash = best_torrent["info_hash"]
+    torrent_name = best_torrent["title"]
+    # torrent_url = utils.create_torrent_url(infohash, torrent_name)
+    torrent_url = best_torrent["magnet"]
     stream_or_dl = "streaming" if not download else "downloading"
 
     bash_command = "webtorrent '" + torrent_url + "'"
 
     if not download:
-        bash_command += " --vlc --playlist"
+        bash_command += f" --{config.app_config.player} --playlist"
     if save_path != "" and save_path != None:
         bash_command += " -o " + "'" + save_path + "'"
     # TODO test what works for windows and add it here
