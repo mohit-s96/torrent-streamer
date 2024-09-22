@@ -8,6 +8,8 @@ import init
 from printcolor import colors
 import providers.providers as providers
 
+config.load_config()
+
 dependencies = [
     {
         "name": "node",
@@ -23,8 +25,6 @@ input_term = options_dict.get("-q")
 download = options_dict.get("-dl")
 save_path = options_dict.get("-o")
 debug = options_dict.get("-dbg")
-
-config.load_config()
 
 if not config.app_config.setup:
     for dependency in dependencies:

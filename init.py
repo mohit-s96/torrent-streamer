@@ -49,8 +49,9 @@ def init():
     history_clear_option = ["--history-clear", "-HC"]
     direct_search_option = "-q"
     pick_from_history_option = "-ph"
-    help_option = "--help"
+    help_options = ["--help", "-h"]
     upgrade_option = ["--upgrade", "-U"]
+    play_from_magnet = ["--magnet", "-m"]
 
     overrides_list = False
     input_term = ""
@@ -75,6 +76,15 @@ def init():
             history.clear_history()
         elif any(option in sys.argv for option in upgrade_option):
             utils.upgrade()
+        elif any(option in sys.argv for option in play_from_magnet):
+            input_term = " ".join(sys.argv[2:3])
+            options = parse_input_buffer(" ".join(sys.argv[3:]))
+            utils.play_from_magnet(
+                magnet=input_term,
+                save_path=options.get("-o"),
+                download=options.get("-dl"),
+            )
+            exit(0)
         elif direct_search_option in sys.argv:
             if not sys.stdin.isatty():
                 input_term = "-q " + sys.stdin.readlines()[0]
@@ -95,6 +105,6 @@ def init():
             except:
                 colors.error("Something went wrong. Invalid input maybe??")
                 exit(0)
-        elif help_option in sys.argv:
+        elif any(option in sys.argv for option in help_options):
             utils.print_help()
     return overrides_list, options_dict

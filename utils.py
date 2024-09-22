@@ -108,28 +108,42 @@ def write_file(file_path, content):
         f.write(content)
 
 
+# fmt: off
 def print_help():
-    colors.info("\n*****************************\n")
-    colors.info("Usage: " + sys.argv[0] + " " + "--option")
+    colors.info("Usage: " + sys.argv[0] + " " + "[options]")
     colors.info("\noptions:\n")
-    colors.info("--help: print this help")
-    colors.info("--upgrade: Update to the latest available version")
-    colors.info(
-        "--list | -L : list all the torrents and let the user decide which one to choose"
-    )
-    colors.info("--toggle-history | -TH : toggle saving history on or off")
-    colors.info("--toggle-list | -TL : switch the default list mode on or off")
-    colors.info("--history | -HL : list search history")
-    colors.info("--history-clear | -HC : clear search history")
-    colors.info("-q [query term] : Search directly or pipe the results from stdin")
-    colors.info(
-        "-ph [history index] : pass the index of an item from history to search for it again"
-    )
-    colors.info("-dl : download the torrent instead of streaming")
-    colors.info("-o [location] : change the output location of downloads")
-    colors.info("-dbg : enable debug logging in case of errors")
-    colors.info("\n*****************************\n")
+    colors.info("--help, -h                                     print this help")
+    colors.info("\n")
+ 
+    colors.info("-q [query term]                                search directly or pipe the query from stdin")
+    colors.info("-dl                                            download the torrent instead of streaming")
+    colors.info("-o [output path]                               change the output location of downloads")
+    colors.info("--magnet, -m [magnet link]                     play or download directly from a magnet link")                         
+    
+    colors.info("\n")
+    
+    colors.info("--list, -L                                     list all the torrents and let the user decide which one to choose")
+    colors.info("--toggle-history, -TH                          toggle saving history on or off")
+    colors.info("--toggle-list, -TL                             switch the default list mode on or off")
+    colors.info("--history, -HL                                 list search history")
+    colors.info("--history-clear, -HC                           clear search history")
+    colors.info("-ph [history index]                            pass the index of an item from history to search for it again")
+    colors.info("\n")
+    
+    colors.info("--upgrade                                      update to the latest available version")
+    colors.info("\n")
+    
+    colors.info("-dbg                                           enable debug logging in case of errors")
+    colors.info("\n")
+    
+    colors.info("General Usage:")
+    colors.info("\n")
+
+    colors.info("Streaming                                      ./main.py -q <search term>")
+    colors.info("Downloading                                    ./main.py -q <search term> - o <output path>")
+    
     exit(0)
+# fmt: on
 
 
 def print_table(table):
@@ -184,3 +198,24 @@ def upgrade():
     if script_dir != process_dir:
         os.chdir(process_dir)
     exit(code)
+
+
+def play_from_magnet(magnet, save_path, download):
+    import config
+
+    torrent_url = magnet
+    stream_or_dl = "streaming" if not download else "downloading"
+
+    bash_command = "webtorrent '" + torrent_url + "'"
+
+    if not download:
+        bash_command += f" --{config.app_config.player} --playlist"
+    if save_path != "" and save_path != None:
+        bash_command += " -o " + "'" + save_path + "'"
+    # TODO test what works for windows and add it here
+    print(stream_or_dl)
+    try:
+        subprocess.run(bash_command, shell=True)
+    except KeyboardInterrupt:
+        colors.warning("\nExiting...")
+        exit(0)
