@@ -31,8 +31,6 @@ if not config.app_config.setup:
         utils.check_dependencies(dependency)
     config.save_setup(True)
 
-base_url = "https://tpb37.ukpass.co/apibay/q.php?q="
-
 
 def get_best_torrent(torrent_list):
     best_seeders = int(torrent_list[0]["seeders"])

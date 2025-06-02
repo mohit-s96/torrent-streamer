@@ -1,13 +1,20 @@
 from bs4 import BeautifulSoup
 import utils
 import re
+import requests
 
 
 def Provider():
     from providers.providers import ProviderResult
 
-    base = "https://tpirbay.site/search"
     page = 0
+
+    def get_base_url():
+        return requests.get(
+            "https://gist.githubusercontent.com/mohit-s96/73c3cb2868898d7d13c0ce4e6db95ab5/raw/torrent_router.json"
+        )
+
+    base = get_base_url().json()["tpb"]
 
     # tbp randomizes attributes like id/class by inserting random spaces before/after the text
     def trim_attribute_text(input_string):
