@@ -141,7 +141,7 @@ def print_help():
     colors.info("\n")
 
     colors.info("Streaming                                      ./main.py -q <search term>")
-    colors.info("Downloading                                    ./main.py -q <search term> - o <output path>")
+    colors.info("Downloading                                    ./main.py -q <search term> -dl -o <output path> ")
     
     exit(0)
 # fmt: on
