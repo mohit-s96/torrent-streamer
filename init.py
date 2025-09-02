@@ -107,6 +107,7 @@ def init():
             try:
                 history_num = int(sys.argv[2])
                 input_term = history.get_history_at_index(history_num)
+                options_dict["-q"] = input_term
             except ValueError:
                 print("Invalid index")
                 exit(0)
